@@ -1,5 +1,5 @@
 import { Stack, useLocalSearchParams, useRouter, useSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   RefreshControl,
@@ -14,20 +14,29 @@ import { Company, JobAbout, JobFooter, JobTabs, ScreenHeaderBtn, Specifics } fro
 
 const tabs=["About", "Qualifications", "Responsibilities"]
 
-const onRefresh = () => {};
+
 const JobDetails = () => {
   const params = useLocalSearchParams();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
+  const onRefresh =useCallback(
+    () => {
+    setRefreshing(true)
+    reFetch()
+    setRefreshing(false)
+  
+    },
+    []
+  )
 const displayContent=()=>{
   switch (activeTab) {
     case "About":
       return <JobAbout info={data[0].job_description ?? "No data Provided"}/>
       case "Qualifications":
-      return <Specifics title="Qualifications" point={data[0].job_highlights?.Qualifications ??['N/A'] }/>
+      return <Specifics title="Qualifications" points={data[0].job_highlights?.Qualifications ??['N/A'] }/>
         case "Responsibilities":
-          return <Specifics title="Responsibilities" point={data[0].job_highlights?.Responsibilities ??['N/A'] }/>
+          return <Specifics title="Responsibilities" points={data[0].job_highlights?.Responsibilities ??['N/A'] }/>
 
     default:
       break;
@@ -83,7 +92,7 @@ const displayContent=()=>{
           </View>
         )}
       </ScrollView>
-      <JobFooter url={data[0].job_google_link ?? "https://oviasuyiosagioduwa.vercel.app/"} />
+      <JobFooter url={ "https://oviasuyiosagioduwa.vercel.app/"} />
      </>
     </SafeAreaView>
   );
