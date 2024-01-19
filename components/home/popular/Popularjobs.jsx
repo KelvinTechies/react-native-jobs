@@ -8,6 +8,11 @@ import { COLORS, SIZES } from "../../../constants";
 import { FlatList } from "react-native-gesture-handler";
 import useFetch from "../../../hook/useFetch";
 const Popularjobs = () => {
+  const [selectedJob, setSelectedJobs] = useState('')
+  const handleCardPress=(item)=>{
+router.push(`job-details/${item.job_id}`)
+setSelectedJobs(item.job_id)
+  }
   const { data, isLoading, error } = useFetch("search", {
     query: "React Developer",
     num_pages: 1,
@@ -31,7 +36,7 @@ const Popularjobs = () => {
           <FlatList
             keyExtractor={(item) => item?.job_id}
             data={data}
-            renderItem={({ item }) => <PopularJobCard item={item} />}
+            renderItem={({ item }) => <PopularJobCard item={item} selectedJob={selectedJob} handleCardPress={handleCardPress} />}
             horizontal
             contentContainerStyle={{ columnGap: SIZES.medium }}
           />
